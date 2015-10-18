@@ -34,6 +34,8 @@ function MapReader(map) {
     }
     this.mapArray = mapArray;
     this.tileset = new Tileset("tiles.png");
+    
+    this.personnages = new Array();
 }
 
 MapReader.prototype.dessinerMap = function(context) {
@@ -45,8 +47,12 @@ MapReader.prototype.dessinerMap = function(context) {
             this.tileset.drawTile(ligne[j], context, j * 26, y);
         }
     }
+    
+    //Dessine les personnages
+    for(var i=0;i<this.personnages.length;i++){
+        this.personnages[i].drawPersonnage(context);
+    }
 }
-
 
 // Pour récupérer la taille (en tiles) de la carte
 MapReader.prototype.getHauteur = function() {
@@ -57,4 +63,8 @@ MapReader.prototype.getLargeur = function() {
 }
 MapReader.prototype.getMap = function() {
     return this.mapArray;
+}
+
+MapReader.prototype.addPersonnage = function(perso){
+    this.personnages.push(perso);
 }
