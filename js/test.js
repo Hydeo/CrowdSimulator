@@ -1,10 +1,13 @@
 var grid = new Grid_graph();
 
-var n1 = new Grid_node(key = "1,1");
-var n2 = new Grid_node(key = "1,2");
-grid.addNode(n1);
-grid.addNode(n2);
+var arrayGr = [
+	[2,2,2,2,2],
+	[2,0,1,0,2],
+	[2,0,1,1,2],
+	[2,0,1,0,2],
+	[2,2,2,2,2]
+];
 
-new Grid_edge(n1, n2, "100");
-
-console.log(grid.nodes);
+grid.parseGraph(arrayGr);
+console.log(grid.nodes[2][2]);
+console.log(grid.nodes[1][1].getEdges()[0].getOther(grid.nodes[1][1]).toString());
