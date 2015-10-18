@@ -33,8 +33,7 @@ function MapReader(map) {
         mapArray.push(lineArray);
     }
     this.mapArray = mapArray;
-    this.tileset = new Tileset("tiles.png");
-    
+    this.tileset = new Tileset("Pokemon-2.png");
     this.personnages = new Array();
 }
 

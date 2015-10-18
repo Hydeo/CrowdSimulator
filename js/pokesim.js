@@ -1,9 +1,7 @@
-var ts = new Tileset("tiles.png");
 var map = new MapReader("map");
 
 var perso = new Personnage("pokemon", 2, 2, DIRECTION.BAS)
 map.addPersonnage(perso);
-
 
 window.onload = function () {
     var canvas = document.getElementById('canvas');
@@ -47,10 +45,9 @@ window.onload = function () {
             perso.deplacer(DIRECTION.DROITE, map);
             break;
         default:
-            //alert(key);
-            // Si la touche ne nous sert pas, nous n'avons aucune raison de bloquer son comportement normal.
             return true;
         }
+        return false;
     }
 
 }
