@@ -9,18 +9,25 @@
 
 <body>
     <span id="span"></span>
-
-    <canvas id="canvas">Votre navigateur ne supporte pas l'HTML5, pour profiter de cette magnifique simulation veuillez le mettre à jour ou en changer.</canvas>
+    
+    <div id='canvasDiv'> 
+        <img id='poketitle' src="img/Font.png">
+        <br>
+        <canvas id="canvas">Votre navigateur ne supporte pas l'HTML5, pour profiter de cette magnifique simulation veuillez le mettre à jour ou en changer.</canvas>
+        <br>
+        <select name="map-theme" id="map_theme" size="1" onchange="pokesim">
+            <option>Pokemon</option>
+            <option>Original</option>
+            <option>Pokemon-2</option>
+        </select>
+    </div>
+   
     
 
     
-    <br>
     
-    <select name="map-theme" id="map_theme" size="1" onchange="pokesim">
-    <option>Pokemon</option>
-    <option>Original</option>
-    <option>Pokemon-2</option>
-    </select>
+    
+   
 
     
     <script type="text/javascript" src="js/classes/getXMLHttpRequest.js"></script>

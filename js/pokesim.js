@@ -2,6 +2,8 @@ var map = new MapReader("map");
 
 var perso = new Personnage("pokemon", 2, 2, DIRECTION.BAS)
 map.addPersonnage(perso);
+var persos = new Personnage("pokemon", 2, 4, DIRECTION.BAS)
+map.addPersonnage(persos);
 
 window.onload = function () {
     var canvas = document.getElementById('canvas');

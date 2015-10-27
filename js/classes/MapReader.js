@@ -33,6 +33,7 @@ function MapReader(map) {
         mapArray.push(lineArray);
     }
     this.mapArray = mapArray;
+    this.checkMap();
     this.tileset = new Tileset("Pokemon-2.png");
     this.personnages = new Array();
 }
@@ -58,7 +59,7 @@ MapReader.prototype.getHauteur = function() {
     return this.mapArray.length;
 }
 MapReader.prototype.getLargeur = function() {
-    return this.mapArray[0].length-1;
+    return this.mapArray[0].length;
 }
 MapReader.prototype.getMap = function() {
     return this.mapArray;
@@ -66,4 +67,33 @@ MapReader.prototype.getMap = function() {
 
 MapReader.prototype.addPersonnage = function(perso){
     this.personnages.push(perso);
+}
+
+MapReader.prototype.checkMap = function(){
+    //Test a effectuer 
+    // - première ligne que des *
+    // - N ligne : premier et dernier char *
+    // - dernière ligne que des *
+  
+    // On test que toute la premier ligne est égale à *
+    for(var j=0;j< this.mapArray[0].length;j++){
+        if( this.mapArray[0][j] != "*")
+            if(!alert(" /!\\ La map n'est pas valide, il manque des murs à la première ligne !/!\\ ")){window.location.reload();}      
+        if( this.mapArray[this.mapArray.length-1][j] != "*")
+            if(!alert("/!\\ La map n'est pas valide, il manque des murs à la dernière ligne ! /!\\")){window.location.reload();}
+    }
+    
+    for(var l=0;l<  this.mapArray.length;l++){
+        console.log(l);
+        if( this.mapArray[l][0] !="*" || this.mapArray[l][ this.mapArray[0].length-1] !="*" )
+            if(!alert(" /!\\ La map n'est pas valide, il manque des murs de cloison ligne "+l+" /!\\")){window.location.reload();}
+            //throw new Error("La map n'est pas valide, il manque des murs de cloison ligne "+l); 
+        
+        for(var k =0;k<this.mapArray[l].length;k++){
+            if( this.mapArray[l][k] !="*" && this.mapArray[l][k] !="G" && this.mapArray[l][k] !="A" && this.mapArray[l][k] !="D" && this.mapArray[l][k] !=" ")
+                if(!alert(" /!\\ La map n'est pas valide, caractère invalide ligne "+l+ " colonne " + k +" : '"+this.mapArray[l][k]+"' /!\\")){window.location.reload();}
+                //throw new Error("La map n'est pas valide, caractère invalide ligne "+l+ " colonne " + k); 
+        }
+    
+    }
 }
