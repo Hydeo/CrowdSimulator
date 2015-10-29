@@ -1,13 +1,17 @@
 var grid = new Grid_graph();
+var queue = new PriorityQueue(function(a,b) {return a>b?1:-1;});
+var poketest = new Pokemon(0);
+poketest.coords = [3,1];
 
 var arrayGr = [
-	[2,2,2,2,2],
-	[2,0,1,0,2],
-	[2,0,1,1,2],
-	[2,0,1,0,2],
-	[2,2,2,2,2]
+	['*','*','*','*','*','*'],
+	['*',' ','*',' ','A','*'],
+	['*',' ','G','G',' ','*'],
+	['*','D','G',' ',' ','*'],
+	['*','*','*','*','*','*']
 ];
 
 grid.parseGraph(arrayGr);
-console.log(grid.nodes[2][2]);
-console.log(grid.nodes[1][1].getEdges()[0].getOther(grid.nodes[1][1]).toString());
+
+grid.seekPath(poketest);
+
