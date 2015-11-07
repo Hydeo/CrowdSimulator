@@ -27,7 +27,7 @@ var Grid_graph = function() {
 				tmp.type = graph[i][j];
 				
 				if('D' == graph[i][j]) {
-					this.starts.push(tmpw);
+					this.starts.push(tmp);
 				}
 				
 				// Création des Edges
