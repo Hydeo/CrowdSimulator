@@ -11,7 +11,6 @@ function MapReader(map) {
     //--------------------------------
 
     //Va contenir le tableau a deux dimension qui représente le plateau puis qui sera traduit en json pour faciliter l'accesibilité
-    //@TODO : Validateur de map
     var mapArray = [];
     var i = 0;
 
@@ -96,4 +95,8 @@ MapReader.prototype.checkMap = function(){
         }
     
     }
+}
+
+MapReader.prototype.modifyMap = function(y,x,tilesType){
+    this.mapArray[y][x] = tilesType;
 }

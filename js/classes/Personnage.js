@@ -4,8 +4,8 @@ var DIRECTION = {
     "DROITE": 1,
     "HAUT": 0
 }
-var DUREE_ANIM = 4; // nombre de fois que la frame a été dessinée, après X fois, on passe a la frame suivante de l'animation
-var DUREE_DEPLACEMENT = 15;
+var DUREE_ANIM = 3; // nombre de fois que la frame a été dessinée, après X fois, on passe a la frame suivante de l'animation
+var DUREE_DEPLACEMENT = 8;
 var POKEMON = [72];
 function Personnage(url, x, y, direction) {
     this.x = x; //en cases et non pas en pixel
@@ -60,7 +60,7 @@ Personnage.prototype.drawPersonnage = function (context) {
         this.etatAnimation++;
     }
     //On dessine le sprite 
-  console.log( this.direction * this.hauteur);
+  
     context.drawImage(
         this.image, (this.largeur * frame)+(72 * this.pokemonWidth), // changer la deuxieme valeur pour changer de pokemon (+24 pour changer de colonne)
         (this.direction * this.hauteur)+128*this.pokemonHeigth, // Point d'origine de la zone a prendre dans notre image de sprite (permet de changer de direction)

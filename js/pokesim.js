@@ -51,5 +51,17 @@ window.onload = function () {
         }
         return false;
     }
+    window.onclick = function (event) {
+
+
+        if (document.getElementById('wall').checked) {
+            map.modifyMap(Math.trunc((event.clientY - (canvas.getBoundingClientRect()).top) / 26), Math.trunc((event.clientX - (canvas.getBoundingClientRect()).left) / 26), "*");
+        } else if (document.getElementById('grass').checked) {
+            map.modifyMap(Math.trunc((event.clientY - (canvas.getBoundingClientRect()).top) / 26), Math.trunc((event.clientX - (canvas.getBoundingClientRect()).left) / 26), "G");
+        } else if (document.getElementById('ground').checked) {
+            map.modifyMap(Math.trunc((event.clientY - (canvas.getBoundingClientRect()).top) / 26), Math.trunc((event.clientX - (canvas.getBoundingClientRect()).left) / 26), " ");
+        }
+
+    }
 
 }

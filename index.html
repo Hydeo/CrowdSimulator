@@ -9,27 +9,42 @@
 
 <body>
     <span id="span"></span>
-    
-    <div id='canvasDiv'> 
+
+    <div id='canvasDiv'>
         <img id='poketitle' src="img/Font.png">
         <br>
         <canvas id="canvas">Votre navigateur ne supporte pas l'HTML5, pour profiter de cette magnifique simulation veuillez le mettre à jour ou en changer.</canvas>
         <br>
-        <select name="map-theme" id="map_theme" size="1" onchange="pokesim">
-            <option>Pokemon</option>
-            <option>Original</option>
-            <option>Pokemon-2</option>
-        </select>
+        <div id="ControlPanel">
+            .
+            <div>
+                Tours : <span id="Turns">0</span> | Déplacement : <span id="Moves">0</span> | Pokémons : <span id="NbPoke">0</span> | Pokémons arrivés :<span id="NbPokeDone">0</span>
+            </div>
+            <br>
+            <div>
+                Porte 1 :
+                <input id="Door1" size="5"></input>
+                Porte 2 :
+                <input id="Door2" size="5"></input>
+                Vitesse :
+                <input id="Speed" size="5"></input>
+            </div>
+            <br> Thème:
+            <select name="map-theme" id="map_theme" size="1" onchange="pokesim">
+                <option>Pokemon</option>
+                <option>Original</option>
+                <option>Pokemon-2</option>
+            </select>
+            Creator:
+
+            <input type="radio" id="wall" name="editor" value="*">Wall
+            <input type="radio" id="grass" name="editor" value="G">Grass
+            <input type="radio" id="ground" name="editor" value=" ">Ground
+
+            <br> .
+        </div>
     </div>
-   
-    
 
-    
-    
-    
-   
-
-    
     <script type="text/javascript" src="js/classes/getXMLHttpRequest.js"></script>
     <script type="text/javascript" src="js/classes/Personnage.js"></script>
     <script type="text/javascript" src="js/classes/Tileset.js"></script>

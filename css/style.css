@@ -3,7 +3,6 @@ canvas{
 }
 div {
     text-align: center;
-  
 }
 
 body {
@@ -13,4 +12,13 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+
+#ControlPanel {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;   
+    background-image:url(../tilesets/controlBox.png);
+    background-size: 100% 100%;
+    
 }
