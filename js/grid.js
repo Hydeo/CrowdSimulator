@@ -1,5 +1,7 @@
 var Grid_graph = function() {
 	this.nodes = new Array();
+	this.pokemons = new Array();
+	this.starts = new Array();
 	
 	Grid_graph.prototype.addNode = function(node) {
 		if(!(node instanceof Grid_node))
@@ -20,10 +22,13 @@ var Grid_graph = function() {
 				if('*' == graph[i][j])
 					continue;
 				
-				tmp = new Grid_node(key = [i, j]);
+				tmp = new Grid_node(key = [i, j]);		
 				tmp.values = new Array;
+				tmp.type = graph[i][j];
 				
-				tmp.values.type = graph[i][j];
+				if('D' == graph[i][j]) {
+					this.starts.push(tmpw);
+				}
 				
 				// Création des Edges
 				if(i > 0) {
@@ -60,7 +65,7 @@ var Grid_graph = function() {
 				continue;
 			
 			for(var j = 0; j<this.nodes[i].length; j++) {
-				if(this.nodes[i][j] != undefined && this.nodes[i][j].values.type == 'A') {
+				if(this.nodes[i][j] != undefined && this.nodes[i][j].type == 'A') {
 					if(tmp == null)
 						tmp = [i, j];
 					
@@ -101,6 +106,8 @@ var Grid_graph = function() {
 		}
 		
 		path.add(actual);
+		
+		path.queue = path.queue.reverse();
 		console.log(path.queue.toString());
 		return path;
 	} 
@@ -146,58 +153,12 @@ var Grid_graph = function() {
 			closed.add(tmp);
 		}
 	}
-}
-
-var Grid_edge = function(n1, n2, attributes) {
-	if(!(n1 instanceof Grid_node) || !(n1 instanceof Grid_node))
-		return null;
 	
-	this.n1 = n1;
-	this.n2 = n2;
-	
-	this.n1.addEdge(this);
-	this.n2.addEdge(this);
-	
-	this.attributes = attributes
-	
-	Grid_edge.prototype.getOther = function(node) {
-		if(!(node instanceof Grid_node))
-			return null;
+	Grid_graph.prototype.generatePokemons = function() {
 		
-		return this.n1 == node?this.n2:this.n1;
-	}
-}
-
-var Grid_node = function(key, values) {
-	this.key = key;
-	this.values = values;
-	this.egdes = new Array();
-	
-	Grid_node.prototype.addEdge = function(edge) {
-		if(!(edge instanceof Grid_edge))
-			return;
-		
-		if(this.egdes == undefined)
-			this.egdes = new Array();
-		
-		this.egdes.push(edge);
 	}
 	
-	Grid_node.prototype.getEdgeWithNode = function(node) {
-		for(var i = 0; i<this.getEdges().length; i++) {
-			console.log(this.getEdges()[i]);
-			if(this.getEdges()[i].n1 === node || this.getEdges()[i].n2 === node)
-				return this.getEdges()[i];
-		}
+	Grid_graph.prototype.placeNewPokemons = function() {
 		
-		return null;
-	}
-	
-	Grid_node.prototype.getEdges = function() {
-		return this.egdes;
-	}
-	
-	Grid_node.prototype.toString = function() {
-		return this.key[0]+" "+this.key[1];
 	}
 }
