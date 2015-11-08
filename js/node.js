@@ -21,6 +21,7 @@ var Grid_edge = function(n1, n2, attributes) {
 var Grid_node = function(key, values, type) {
 	this.key = key;
 	this.values = values;
+	this.occupped = false;
 	this.type = type;
 	this.egdes = new Array();
 	

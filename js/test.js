@@ -1,7 +1,4 @@
-var grid = new Grid_graph();
-var queue = new PriorityQueue(function(a,b) {return a>b?1:-1;});
-var poketest = new Pokemon(0);
-poketest.coords = [10,1];
+var grid = new Grid_graph(3, 3, 1);
 
 var arrayGr = [
 	['*','*','*','*','*','*'],
@@ -14,11 +11,11 @@ var arrayGr = [
 	['*',' ','G','G',' ','*'],
 	['*',' ','G','G',' ','*'],
 	['*',' ','G','G',' ','*'],
-	['*','D','G',' ',' ','*'],
+	['*','D','G',' ','D','*'],
 	['*','*','*','*','*','*']
 ];
 
 grid.parseGraph(arrayGr);
-
-grid.seekPath(poketest);
+grid.placeNewPokemons();
+console.log(grid.pokemons);
 

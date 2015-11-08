@@ -1,7 +1,12 @@
-var Grid_graph = function() {
+var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 	this.nodes = new Array();
 	this.pokemons = new Array();
 	this.starts = new Array();
+	this.pkmnNb = 0;
+	
+	this.starts[0] = {"node":null, "pool":pkmn1};
+	this.starts[1] = {"node":null, "pool":pkmn2};
+	this.starts[2] = {"node":null, "pool":pkmn3};
 	
 	Grid_graph.prototype.addNode = function(node) {
 		if(!(node instanceof Grid_node))
@@ -17,6 +22,7 @@ var Grid_graph = function() {
 		var tmp;
 		for(var i = 0; i < graph.length; i++) {
 			var tmp_row = new Array();
+			var starts = 0;
 			
 			for(var j = 0; j < graph[i].length; j++) {				
 				if('*' == graph[i][j])
@@ -26,8 +32,8 @@ var Grid_graph = function() {
 				tmp.values = new Array;
 				tmp.type = graph[i][j];
 				
-				if('D' == graph[i][j]) {
-					this.starts.push(tmp);
+				if('D' == graph[i][j] && starts < 3) {
+					this.starts[starts++]["node"] = tmp;
 				}
 				
 				// Création des Edges
@@ -154,11 +160,35 @@ var Grid_graph = function() {
 		}
 	}
 	
-	Grid_graph.prototype.generatePokemons = function() {
-		
-	}
-	
 	Grid_graph.prototype.placeNewPokemons = function() {
+		if(this.starts == null || this.starts.length < 1) {
+			return;
+		}
 		
+		var newPkmn;
+		
+		for(var i = 0; i<3; i++) {
+			if(this.starts[i] != undefined && this.starts[i]["node"] != null) {
+				for(var l = -1; l<2; l+=2) {
+					if(this.starts[i]["pool"] > 0 && this.starts[i]["node"] != null 
+						&& this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + l] != undefined
+						&& !this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + l].occuped) {
+							
+						newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] + l]);s
+						this.pokemons.push(newPkmn);
+						this.starts[i]["pool"]--;
+					}
+					
+					if(this.starts[i]["pool"] > 0 && this.starts[i]["node"] != null 
+						&& this.nodes[this.starts[i]["node"].key[0] + l] != undefined && this.nodes[this.starts[i]["node"].key[0] + l][this.starts[i]["node"].key[1]] != undefined
+						&& !this.nodes[this.starts[i]["node"].key[0] + l][this.starts[i]["node"].key[1]].occuped) {
+							
+						newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + l, this.starts[i]["node"].key[1]]);
+						this.pokemons.push(newPkmn);
+						this.starts[i]["pool"]--;
+					}
+				}
+			}
+		}
 	}
-}
+}	
