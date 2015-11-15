@@ -8,7 +8,7 @@ var Grid_edge = function(n1, n2, attributes) {
 	this.n1.addEdge(this);
 	this.n2.addEdge(this);
 	
-	this.attributes = attributes
+	this.attributes = attributes;
 	
 	Grid_edge.prototype.getOther = function(node) {
 		if(!(node instanceof Grid_node))
@@ -37,7 +37,6 @@ var Grid_node = function(key, values, type) {
 	
 	Grid_node.prototype.getEdgeWithNode = function(node) {
 		for(var i = 0; i<this.getEdges().length; i++) {
-			console.log(this.getEdges()[i]);
 			if(this.getEdges()[i].n1 === node || this.getEdges()[i].n2 === node)
 				return this.getEdges()[i];
 		}

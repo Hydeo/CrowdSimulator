@@ -39,13 +39,13 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				// Création des Edges
 				if(i > 0) {
 					if('*' != graph[i-1][j]) {
-						new Grid_edge(this.nodes[i-1][j], tmp, {cost:graph[i][j]=='G'?2:1});
+						new Grid_edge(this.nodes[i-1][j], tmp, {cost:(graph[i][j]=='G' || graph[i-1][j]=='G')?2:1});
 					}
 				}
 				
 				if(j > 0)  {
 					if('*' != graph[i][j-1]) {
-						new Grid_edge(tmp_row[j-1], tmp, {cost:graph[i][j]=='G'?2:1});
+						new Grid_edge(tmp_row[j-1], tmp, {cost:(graph[i][j]=='G' || graph[i][j-1]=='G')?2:1});
 					}
 				}
 				
@@ -58,7 +58,7 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 	}
 	
 	Grid_graph.prototype.getDistance = function(node1, node2) {
-		return Math.sqrt((node2.key[0] - node1.key[0])*(node2.key[0] - node1.key[0]) - (node2.key[1] - node1.key[1])*(node2.key[1] - node1.key[1]))
+		return Math.sqrt((node2.key[0] - node1.key[0])*(node2.key[0] - node1.key[0]) - (node2.key[1] - node1.key[1])*(node2.key[1] - node1.key[1])).toFixed(2);
 	}
 	
 	Grid_graph.prototype.getNearestArrival = function(coords) {
@@ -85,10 +85,11 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 	}
 	
 	var compare2Nodes = function(node1, node2, id) {
-		if(node1.values[id] < node2.values[id])
+	
+		if(node1.values[id]["eur"] < node2.values[id]["eur"])
 			return 1;
 		
-		if(node1.values[id] == node2.values[id])
+		if(node1.values[id]["eur"]  == node2.values[id]["eur"] )
 		return 0;	
 		
 		return -1; 
@@ -96,48 +97,50 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 	
 	var returnPath = function(node, id) {
 		var actual = node, tmp;
-		var path = new PriorityQueue(compare2Nodes, id);
-		
-		while(actual.values[id]["cost"] > 0) {
+		var path = new Queue();
+
+		while(actual.values["path_"+id]["eur"] > 0) {
 			path.add(actual);
-			tmp = actual.getEdges()[0].getOther(actual);
+
+			var i = 0;
+			while(actual.getEdges()[i].getOther(actual).values["path_"+id] == undefined) { i++; }
+			tmp = actual.getEdges()[i].getOther(actual);
 			
-			for(var i = 1; i<actual.getEdges().length;i++) {
-				if(actual.getEdges()[i].getOther(actual).values[id]["cost"] < tmp.values[id]["cost"]) {
+			for(;i<actual.getEdges().length;i++) {		
+				if(actual.getEdges()[i].getOther(actual).values["path_"+id] != undefined && actual.getEdges()[i].getOther(actual).values["path_"+id]["cost"] < tmp.values["path_"+id]["cost"]) {
 					tmp = actual.getEdges()[i].getOther(actual);
 				}
 			}
 			
 			actual = tmp;
 		}
-		
-		path.add(actual);
-		
+
 		path.queue = path.queue.reverse();
-		console.log(path.queue.toString());
 		return path;
 	} 
 	
-	Grid_graph.prototype.seekPath = function(pokemon) {
+	Grid_graph.prototype.seekPathToArrival = function(pokemon) {
 		if(!(pokemon instanceof Pokemon))
 			return;
 		
 		var actual = this.nodes[pokemon.coords[0]][pokemon.coords[1]];
 		var end = this.getNearestArrival(pokemon.coords);
 		
-		var opened = new PriorityQueue(compare2Nodes, pokemon.id);
+		var opened = new PriorityQueue(compare2Nodes, "path_"+pokemon.id);
 		var closed = new Queue();
 		var tmp = null, next = null;
 		
 		opened.add(actual);
-		actual.values[pokemon.id] = {cost:0};
+		actual.values["path_"+pokemon.id] = {cost:0, eur:0};
 		
 		while(opened.size > 0) {
 			tmp = opened.dequeue();
 
 			if(tmp.key == end.key) {
-				tmp.values[pokemon.id]["eur"] = 1;
-				returnPath(tmp, pokemon.id);
+				console.log("find!");
+				tmp.values["path_"+pokemon.id]["eur"] = 1;
+
+				pokemon.path = returnPath(tmp, pokemon.id);
 				return;
 			}
 			
@@ -145,18 +148,26 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				for(var i = 0; i<tmp.getEdges().length; i++) {					
 					next = tmp.getEdges()[i].getOther(tmp);
 					
-					if( closed.contains(next) || (opened.contains(next) && next.values[pokemon.id]["cost"] > tmp.values[pokemon.id]["cost"]) ) 
+					if( next.type == "D" || closed.contains(next) || (opened.contains(next) && next.values["path_"+pokemon.id]["cost"] > tmp.values["path_"+pokemon.id]["cost"]) ) 
 						continue;
 
-					next.values[pokemon.id] = {cost:tmp.values[pokemon.id]["cost"] + tmp.getEdges()[i].attributes["cost"]};
-					next.values[pokemon.id]["eur"] = next.values[pokemon.id]["eur"] + this.getDistance(tmp, end);
-					
+					next.values["path_"+pokemon.id] = {cost:tmp.values["path_"+pokemon.id]["cost"] + tmp.getEdges()[i].attributes["cost"]};
+					next.values["path_"+pokemon.id]["eur"] = next.values["path_"+pokemon.id]["cost"] + this.getDistance(tmp, end);
+									
 					opened.add(next);
-					opened.sortByFilter(pokemon.id, "eur");
+					opened.sortByFilter("path_"+pokemon.id, "eur");
 				}
 			}
-			
 			closed.add(tmp);
+		}
+	}
+	
+	Grid_graph.prototype.seekAllPaths = function() {
+		if(this.pokemons.length < 1)
+			return;
+		
+		for(var i = 0; i<this.pokemons.length; i++) {
+			this.seekPathToArrival(this.pokemons[i]);
 		}
 	}
 	
@@ -174,7 +185,7 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 						&& this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + l] != undefined
 						&& !this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + l].occuped) {
 							
-						newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] + l]);s
+						newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] + l]);
 						this.pokemons.push(newPkmn);
 						this.starts[i]["pool"]--;
 					}
@@ -189,6 +200,22 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 					}
 				}
 			}
+		}
+	}
+	
+	Grid_graph.prototype.movePokemons = function() {
+		var next;
+		for(var i = 0; i<this.pokemons.length; i++) {
+			this.pokemons[i].actions++;
+			if(this.pokemons[i].actions > 0) {
+				var next = this.pokemons[i].path.dequeue();
+				this.pokemons[i].actions -= this.nodes[this.pokemons[i].coords[0]][this.pokemons[i].coords[1]].getEdgeWithNode(next).attributes["cost"];
+				this.pokemons[i].coords = next.key;
+				console.log(this.pokemons[i].coords);
+			}
+			
+			if(this.pokemons[i].path.size < 1) 
+				this.pokemons.splice(i, 1);
 		}
 	}
 }	
