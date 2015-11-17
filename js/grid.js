@@ -137,7 +137,6 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 			tmp = opened.dequeue();
 
 			if(tmp.key == end.key) {
-				console.log("find!");
 				tmp.values["path_"+pokemon.id]["eur"] = 1;
 
 				pokemon.path = returnPath(tmp, pokemon.id);
@@ -203,15 +202,18 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 		}
 	}
 	
-	Grid_graph.prototype.movePokemons = function() {
+	Grid_graph.prototype.makeTurn = function() {
 		var next;
+		this.placeNewPokemons();
+		
 		for(var i = 0; i<this.pokemons.length; i++) {
 			this.pokemons[i].actions++;
 			if(this.pokemons[i].actions > 0) {
+				console.log(this.pokemons[i].id+" => "+this.pokemons[i].coords);
 				var next = this.pokemons[i].path.dequeue();
 				this.pokemons[i].actions -= this.nodes[this.pokemons[i].coords[0]][this.pokemons[i].coords[1]].getEdgeWithNode(next).attributes["cost"];
 				this.pokemons[i].coords = next.key;
-				console.log(this.pokemons[i].coords);
+				console.log(this.pokemons[i].id+" => "+this.pokemons[i].coords);
 			}
 			
 			if(this.pokemons[i].path.size < 1) 
