@@ -7,7 +7,7 @@ var DIRECTION = {
 var DUREE_ANIM = 3; // nombre de fois que la frame a été dessinée, après X fois, on passe a la frame suivante de l'animation
 var DUREE_DEPLACEMENT = 8;
 var POKEMON = [72];
-function Personnage(url, x, y, direction) {
+function Pokemon(url, x, y, direction) {
     this.x = x; //en cases et non pas en pixel
     this.y = y;
     this.direction = direction;
@@ -27,7 +27,7 @@ function Personnage(url, x, y, direction) {
     this.image.src = "sprites/" + url + ".png";
 }
 
-Personnage.prototype.drawPersonnage = function (context) {
+Pokemon.prototype.drawPokemon = function (context) {
 
     var frame = 0; // Numéro de l'image à prendre pour l'animation
     var decalageX = 0,
@@ -71,7 +71,7 @@ Personnage.prototype.drawPersonnage = function (context) {
     )
 }
 
-Personnage.prototype.getCoordonneesAdjacentes = function (direction) {
+Pokemon.prototype.getCoordonneesAdjacentes = function (direction) {
     var coord = {
         'x': this.x,
         'y': this.y
@@ -93,7 +93,7 @@ Personnage.prototype.getCoordonneesAdjacentes = function (direction) {
     return coord;
 }
 
-Personnage.prototype.deplacer = function (direction, map) {
+Pokemon.prototype.deplacer = function (direction, map) {
     // On ne peut pas se déplacer si un mouvement est déjà en cours 
   /*  if (this.etatAnimation >= 0) {
         return false;
@@ -114,3 +114,4 @@ Personnage.prototype.deplacer = function (direction, map) {
 
     return true;
 }
+

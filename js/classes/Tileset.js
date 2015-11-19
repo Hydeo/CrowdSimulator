@@ -2,7 +2,6 @@ function Tileset(url) {
     //On recupère l'image qui contient les tiles
     var e = document.getElementById("map_theme");
     var tileFile = e.options[e.selectedIndex].text;
-    console.log(tileFile);
     this.image = new Image();
     this.image.referenceDuTileset = this;
     this.image.onload = function () {

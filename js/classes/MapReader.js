@@ -34,7 +34,9 @@ function MapReader(map) {
     this.mapArray = mapArray;
     this.checkMap();
     this.tileset = new Tileset("Pokemon-2.png");
-    this.personnages = new Array();
+    this.Pokemon = new Array();
+
+   
 }
 
 MapReader.prototype.dessinerMap = function(context) {
@@ -48,8 +50,8 @@ MapReader.prototype.dessinerMap = function(context) {
     }
     
     //Dessine les personnages
-    for(var i=0;i<this.personnages.length;i++){
-        this.personnages[i].drawPersonnage(context);
+    for(var i=0;i<this.Pokemon.length;i++){
+        this.Pokemon[i].drawPokemon(context);
     }
 }
 
@@ -64,8 +66,8 @@ MapReader.prototype.getMap = function() {
     return this.mapArray;
 }
 
-MapReader.prototype.addPersonnage = function(perso){
-    this.personnages.push(perso);
+MapReader.prototype.addPokemon= function(perso){
+    this.Pokemon.push(perso);
 }
 
 MapReader.prototype.checkMap = function(){
@@ -83,7 +85,7 @@ MapReader.prototype.checkMap = function(){
     }
     
     for(var l=0;l<  this.mapArray.length;l++){
-        console.log(l);
+       
         if( this.mapArray[l][0] !="*" || this.mapArray[l][ this.mapArray[0].length-1] !="*" )
             if(!alert(" /!\\ La map n'est pas valide, il manque des murs de cloison ligne "+l+" /!\\")){window.location.reload();}
             //throw new Error("La map n'est pas valide, il manque des murs de cloison ligne "+l); 
