@@ -1,4 +1,4 @@
-var grid = new Grid_graph(1, 1, 1);
+var grid = new Grid_graph(1, 0, 0);
 
 var arrayGr = [
 //	  0	  1	  2	  3   4   5 
@@ -12,11 +12,9 @@ var arrayGr = [
 	['*',' ','G','G',' ','*'], //7
 	['*',' ','G','G',' ','*'], //8
 	['*',' ','G','G',' ','*'], //9
-	['*','D','G',' ','D','*'], //10
+	['*','D','G','G','D','*'], //10
 	['*','*','*','*','*','*']  //11
 ];
 
 grid.parseGraph(arrayGr);
-grid.placeNewPokemons();
-grid.seekAllPaths();
 
