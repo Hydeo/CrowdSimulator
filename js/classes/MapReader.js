@@ -87,7 +87,7 @@ MapReader.prototype.checkMap = function(){
     for(var l=0;l<  this.mapArray.length;l++){
        
         if( this.mapArray[l][0] !="*" || this.mapArray[l][ this.mapArray[0].length-1] !="*" )
-            if(!alert(" /!\\ La map n'est pas valide, il manque des murs de cloison ligne "+l+" /!\\")){window.location.reload();}
+            if(!alert(" /!\\ La map n'est pas valide, il manque des murs de cloison ligne "+l+". \nVérfifiez que les contours de votre carte soient biens murés!  /!\\")){window.location.reload();}
             //throw new Error("La map n'est pas valide, il manque des murs de cloison ligne "+l); 
         
         for(var k =0;k<this.mapArray[l].length;k++){
