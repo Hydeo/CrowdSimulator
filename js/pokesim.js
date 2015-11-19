@@ -1,4 +1,7 @@
 var map = new MapReader("map");
+var grid = new Grid_graph(0, 2, 0);
+var playing = false;
+grid.parseGraph(map.getMap());
 
 window.onload = function () {
     var canvas = document.getElementById('canvas');
@@ -6,45 +9,39 @@ window.onload = function () {
 
     canvas.width = map.getLargeur() * 26;
     canvas.height = map.getHauteur() * 26;
-
-    setInterval(function () {
-        map.dessinerMap(ctx);
-    }, 40);
+    map.dessinerMap(ctx,grid.pokemons);
+    document.getElementById('Speed').value = 100 ;
+    var counter = 100;
     
-    window.onkeydown = function (event) {
-        var e = event || window.event;
-        var key = e.which || e.keyCode;
+    
+    var interval = setInterval(function bigLoop() {
+        //console.log(grid.pokemons.length+" "+playing+" ")
+      //  console.log(grid.starts[1]);
+            if(grid.pokemons.length > 0 && playing){
 
-        switch (key) {
-        case 38:
-        case 122:
-        case 119:
-        case 90:
-        case 87: // Flèche haut, z, w, Z, W
-            perso.deplacer(DIRECTION.HAUT, map);
-            break;
-        case 40:
-        case 115:
-        case 83: // Flèche bas, s, S
-            perso.deplacer(DIRECTION.BAS, map);
-            break;
-        case 37:
-        case 113:
-        case 97:
-        case 81:
-        case 65: // Flèche gauche, q, a, Q, A
-            perso.deplacer(DIRECTION.GAUCHE, map);
-            break;
-        case 39:
-        case 100:
-        case 68: // Flèche droite, d, D
-            perso.deplacer(DIRECTION.DROITE, map);
-            break;
-        default:
-            return true;
+                clearInterval(interval);
+                counter = document.getElementById('Speed').value;
+                grid.makeTurn();
+                map.dessinerMap(ctx,grid.pokemons);
+                document.getElementById('Door1').value = grid.starts[0]["pool"];
+                document.getElementById('Door2').value = grid.starts[1]["pool"];
+                console.log(grid.starts[0]);
+                console.log(grid.starts[1]);
+                document.getElementById('Turns').innerHTML  = grid.turn;
+                document.getElementById('Moves').innerHTML  = grid.moves;
+                document.getElementById('NbPoke').innerHTML  = grid.pokemons.length;
+                document.getElementById('NbPokeDone').innerHTML  = grid.arrived;
+
+                interval = setInterval(bigLoop, counter);
         }
-        return false;
-    }
+    }, counter);
+    
+
+    setInterval(function(){
+         map.dessinerMap(ctx,grid.pokemons);
+     },40);
+
+    
     window.onclick = function (event) {
 
 
@@ -59,3 +56,16 @@ window.onload = function () {
     }
 
 }
+
+var switchState = function(){
+    if(playing)
+        playing = false;
+    else{
+        grid.starts[0]["pool"]=document.getElementById('Door1').value;
+        grid.starts[1]["pool"]=document.getElementById('Door2').value;
+        playing = true;
+        grid.placeNewPokemons();
+    }
+    console.log(playing);
+}
+

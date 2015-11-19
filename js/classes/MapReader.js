@@ -39,7 +39,7 @@ function MapReader(map) {
    
 }
 
-MapReader.prototype.dessinerMap = function(context) {
+MapReader.prototype.dessinerMap = function(context,listPoke) {
         
     for (var i = 0, l = this.mapArray.length; i < l; i++) {
         var ligne = this.mapArray[i];
@@ -50,8 +50,8 @@ MapReader.prototype.dessinerMap = function(context) {
     }
     
     //Dessine les personnages
-    for(var i=0;i<this.Pokemon.length;i++){
-        this.Pokemon[i].drawPokemon(context);
+    for(var i=0;i<listPoke.length;i++){
+        listPoke[i].drawPokemon(context);
     }
 }
 

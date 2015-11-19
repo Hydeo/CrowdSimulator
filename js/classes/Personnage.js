@@ -14,7 +14,7 @@ function Pokemon(url, x, y, direction) {
     this.etatAnimation = 1;
     this.pokemonWidth = Math.floor(Math.random() * 4) + 0;
     this.pokemonHeigth = Math.floor(Math.random() * 2) + 0;
-    ;
+    
     //on charge l'image
     this.image = new Image();
     this.image.referenceDuPerso = this;

@@ -12,7 +12,7 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 	this.pkmnNb = 0;
 	this.turn = 0;
 	this.moves = 0;
-	
+	this.arrived = 0;
 	this.starts[0] = {"node":null, "pool":pkmn1};
 	this.starts[1] = {"node":null, "pool":pkmn2};
 	this.starts[2] = {"node":null, "pool":pkmn3};
@@ -34,9 +34,10 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 			return;
 		
 		var tmp;
+		var starts = 0;
 		for(var i = 0; i < graph.length; i++) {
 			var tmp_row = new Array();
-			var starts = 0;
+			
 			
 			for(var j = 0; j < graph[i].length; j++) {				
 				if('*' == graph[i][j])
@@ -45,10 +46,6 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				tmp = new Grid_node(key = [i, j]);		
 				tmp.values = new Array;
 				tmp.type = graph[i][j];
-				
-				if('D' == graph[i][j] && starts < 3) {
-					this.starts[starts++]["node"] = tmp;
-				}
 				
 				// Création des Edges
 				if(i > 0) {
@@ -63,6 +60,10 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 					}
 				}
 				
+				if('D' == graph[i][j] && starts < 3) {
+					this.starts[starts++]["node"] = tmp;
+				}
+
 				tmp_row[j] = tmp;
 			}
 			
@@ -95,12 +96,12 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 					if(tmp == null)
 						tmp = [i, j];
 					
-					if( (tmp[0]*tmp[0] + tmp[1]*tmp[1]) > (i*i+ j*j) )
+					if( this.getDistance(this.nodes[coords[0]][coords[1]],this.nodes[tmp[0]][tmp[1]]) >  this.getDistance(this.nodes[coords[0]][coords[1]],this.nodes[i][j]))
 						tmp = [i, j];
 				}
 			}			
 		}
-		
+		console.log(this.nodes[tmp[0]][tmp[1]]);
 		return this.nodes[tmp[0]][tmp[1]];
 	}
 	
@@ -201,27 +202,27 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				if(this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] - 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] - 1].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] - 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] - 1],3);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] - 1] != undefined && this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1] - 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1] - 1].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1] - 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1] - 1],0);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] - 1] != undefined && this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1]] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1]].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1]]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1]],0);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] - 1] != undefined && this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1] + 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] - 1][this.starts[i]["node"].key[1] + 1].occuped) {
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1] + 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] - 1, this.starts[i]["node"].key[1] + 1],1);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
@@ -229,28 +230,28 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				if(this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0]][this.starts[i]["node"].key[1] + 1].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] + 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0], this.starts[i]["node"].key[1] + 1],1);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] + 1] != undefined && this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1] + 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1] + 1].occuped)
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1] + 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1] + 1],2);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] + 1] != undefined && this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1]] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1]].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1]]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1]],2);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
 				if(this.nodes[this.starts[i]["node"].key[0] + 1] != undefined && this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1] - 1] != undefined && this.starts[i]["pool"] > 0 &&
 					!this.nodes[this.starts[i]["node"].key[0] + 1][this.starts[i]["node"].key[1] - 1].occuped) 
 				{
-					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1] + 1]);
+					newPkmn = new Pokemon(this.pkmnNb++, [this.starts[i]["node"].key[0] + 1, this.starts[i]["node"].key[1] - 1],2);
 					this.pokemons.push(newPkmn);
 					this.starts[i]["pool"]--;
 				}
@@ -262,14 +263,14 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 		var next;
 		this.placeNewPokemons();
 		
-		console.log("TURN => "+this.turn+" "+this.pokemons.length);
+
 		for(var i = 0; i<this.pokemons.length; i++) {
 			if(this.pokemons[i].path == null || this.pokemons[i].path == undefined) {
 				this.seekPathToArrival(this.pokemons[i]);
 			}
 			
 			if(++this.pokemons[i].actions > 0 && this.turn > 0) {
-				console.log(this.pokemons[i].actions);
+
 				this.pokemons[i].mouvement();
 				var next = this.pokemons[i].path.dequeue();
 				this.pokemons[i].actions -= this.nodes[this.pokemons[i].coords[0]][this.pokemons[i].coords[1]].getEdgeWithNode(next).attributes["cost"];
@@ -277,11 +278,13 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 				this.nodes[this.pokemons[i].coords[0]][this.pokemons[i].coords[1]].getEdgeWithNode(next).occuped = false;
 				next.occuped = true;
 				this.moves++;
-				console.log(this.pokemons[i].actions);
+
 			}
 			
-			if(this.pokemons[i].path.size < 1) 
+			if(this.pokemons[i].path.size < 1){
 				this.pokemons.splice(i, 1);
+				this.arrived++;
+			}
 		}
 		
 		this.turn++;
