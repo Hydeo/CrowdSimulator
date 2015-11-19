@@ -25,8 +25,6 @@ window.onload = function () {
                 map.dessinerMap(ctx,grid.pokemons);
                 document.getElementById('Door1').value = grid.starts[0]["pool"];
                 document.getElementById('Door2').value = grid.starts[1]["pool"];
-                console.log(grid.starts[0]);
-                console.log(grid.starts[1]);
                 document.getElementById('Turns').innerHTML  = grid.turn;
                 document.getElementById('Moves').innerHTML  = grid.moves;
                 document.getElementById('NbPoke').innerHTML  = grid.pokemons.length;
@@ -70,6 +68,5 @@ var switchState = function(){
         playing = true;
         grid.placeNewPokemons();
     }
-    console.log(playing);
 }
 

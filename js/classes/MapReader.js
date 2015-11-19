@@ -32,7 +32,7 @@ function MapReader(map) {
         mapArray.push(lineArray);
     }
     this.mapArray = mapArray;
-    this.checkMap();
+    //this.checkMap();
     this.tileset = new Tileset("Pokemon-2.png");
     this.Pokemon = new Array();
 

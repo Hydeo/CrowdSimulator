@@ -47,6 +47,10 @@ var Pokemon = function(id, coords, direction) {
 	}
 	
 	Pokemon.prototype.mouvement = function () {	 
+		if(this.path == undefined) {
+			return;
+		}
+	
 		if(this.coords[1]-this.path.peek().key[1] == 1 && this.coords[0]-this.path.peek().key[0] == 0) {
 			this.deplacer(DIRECTION.GAUCHE, map);
 			return;
