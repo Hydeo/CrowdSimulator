@@ -18,7 +18,7 @@ window.onload = function () {
         //console.log(grid.pokemons.length+" "+playing+" ")
       //  console.log(grid.starts[1]);
             if(grid.pokemons.length > 0 && playing){
-
+                document.getElementById('play').innerHTML  = "Pause";
                 clearInterval(interval);
                 counter = document.getElementById('Speed').value;
                 grid.makeTurn();
@@ -33,6 +33,10 @@ window.onload = function () {
                 document.getElementById('NbPokeDone').innerHTML  = grid.arrived;
 
                 interval = setInterval(bigLoop, counter);
+        }
+        else{
+            playing=false;
+            document.getElementById('play').innerHTML  = "Play";
         }
     }, counter);
     
