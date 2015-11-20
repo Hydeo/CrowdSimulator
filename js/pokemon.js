@@ -35,6 +35,7 @@ var Pokemon = function(id, coords, direction) {
 	this.coords = coords;
 	this.path = null;
 	this.actions = -1;
+	this.waiting = 0;
 	
 	Pokemon.prototype.setCoords = function(x, y, coords) {
 		if(coords != null && coords instanceof Array) {

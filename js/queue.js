@@ -90,7 +90,11 @@ var PriorityQueue = function(comp, end) {
 		for(i = 0; i<this.queue.length - 1; i++) {
 			index = i;
 			for(j = i+1; j<this.queue.length; j++) {
-				if( this.queue[j].values[filter][filter2] < this.queue[index].values[filter][filter2] ) {
+				if( filter2 != undefined && this.queue[j].values[filter][filter2] < this.queue[index].values[filter][filter2] ) {
+					index = j;
+				}	
+				
+				else if( this.queue[j][filter] < this.queue[index][filter]) {
 					index = j;
 				}	
 			}
