@@ -181,7 +181,7 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 						continue;
 
 					next.values["path_"+pokemon.id] = {cost:(tmp.values["path_"+pokemon.id]["cost"] + tmp.getEdges()[i].attributes["cost"])*(next.occuped?2:1)};
-					next.values["path_"+pokemon.id]["eur"] = (next.values["path_"+pokemon.id]["cost"] + this.getDistance(tmp, end)*1.5);
+					next.values["path_"+pokemon.id]["eur"] = (next.values["path_"+pokemon.id]["cost"] + this.getDistance(tmp, end))*1.5;
 									
 					opened.add(next);
 				}
@@ -307,7 +307,7 @@ var Grid_graph = function(pkmn1, pkmn2, pkmn3) {
 					else {
 						this.pokemons[i].waiting++;
 						
-						while(this.pokemons[i].waiting > 5 ) {
+						if(this.pokemons[i].waiting > 10 ) {
 							this.pokemons[i].waiting = 0;
 							this.seekPathToArrival(this.pokemons[i]);
 						}
